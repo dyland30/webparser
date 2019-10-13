@@ -1,3 +1,3 @@
 class WebPageDetail < ApplicationRecord
-    belongs_to :web_page
+    #belongs_to :web_page
 end
