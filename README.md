@@ -13,7 +13,7 @@
     * Database initialization: 
     `rake db:migrate`
 
-* API METHODS:
+# API METHODS:
 
 ## Parse WebSite ##
 
@@ -89,6 +89,7 @@ puts response.read_body
 * Accept: application/vnd.api+json
 * Content-Type: application/vnd.api+json
 
+#### Examples:
 * Curl
 ```
 curl --location --request GET "http://localhost:3000/web-page-detail" \
