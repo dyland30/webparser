@@ -1,24 +1,114 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
+* Ruby version : 2.6.5
+* Rails version: 6.0.0
+* SqLite3 Version: 1.4
 * Configuration
+    * Install Packages
+    `bundle`
 
-* Database creation
+    * Database creation: 
+    `rake db:create`
 
-* Database initialization
+    * Database initialization: 
+    `rake db:migrate`
 
-* How to run the test suite
+* API METHODS:
 
-* Services (job queues, cache servers, search engines, etc.)
+## Parse WebSite ##
 
-* Deployment instructions
+### GET  http://localhost:3000/parse_website?weburl=<WEBURL>
 
-* ...
+#### Headers
+`Accept: application/vnd.api+json`
+#### Params
+
+PARAMETER: weburl -> The website's url to parse
+
+#### Examples:
+
+* Curl
+`curl --location --request GET "http://localhost:3000/parse_website?weburl=https://hugotunius.se/" --header "Accept: application/vnd.api+json"}`
+
+* Ruby
+```
+require "uri"
+require "net/http"
+
+url = URI("http://localhost:3000/parse_website?weburl=https://hugotunius.se/")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(url)
+request["Accept"] = "application/vnd.api+json"
+
+response = http.request(request)
+puts response.read_body
+
+```
+
+## Get the list of websites parsed ##
+
+### GET http://localhost:3000/web-page 
+
+#### HEADERS
+* Accept: application/vnd.api+json
+* Content-Type: application/vnd.api+json
+
+#### Examples:
+
+* Curl
+```
+curl --location --request GET "http://localhost:3000/web-page" \
+  --header "Accept: application/vnd.api+json" \
+  --header "Content-Type: application/vnd.api+json"
+
+```
+* Ruby
+```
+require "uri"
+require "net/http"
+
+url = URI("http://localhost:3000/web-page")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(url)
+request["Accept"] = "application/vnd.api+json"
+request["Content-Type"] = "application/vnd.api+json"
+
+response = http.request(request)
+puts response.read_body
+```
+
+## Get the websites content ##
+
+### GET http://localhost:3000/web-page-detail 
+
+#### HEADERS
+* Accept: application/vnd.api+json
+* Content-Type: application/vnd.api+json
+
+* Curl
+```
+curl --location --request GET "http://localhost:3000/web-page-detail" \
+  --header "Accept: application/vnd.api+json" \
+  --header "Content-Type: application/vnd.api+json"
+
+```
+* Ruby
+```
+require "uri"
+require "net/http"
+
+url = URI("http://localhost:3000/web-page-detail")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(url)
+request["Accept"] = "application/vnd.api+json"
+request["Content-Type"] = "application/vnd.api+json"
+
+response = http.request(request)
+puts response.read_body
+```

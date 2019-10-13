@@ -15,6 +15,7 @@ class ParserController < ApplicationController
             file.each_line do |line|
                 if line.include? "<title>" or line.include? "<h1" or line.include? "<h2" or line.include? "<h3" or line.include? "<h4" or line.include? "<h5"  or line.include? "<a href" 
                     lines.push(line)
+                    
                 end
             end
             ActiveRecord::Base.transaction do
@@ -29,9 +30,7 @@ class ParserController < ApplicationController
                         page = WebPage.new(surl: url, title: stitle)
                         page.save()
                         page_id = page.id
-                    end
-                    #save the details
-                    if line.include? "<a href"
+                    elsif line.include? "<a href"
                         #extract only the link and save it into the db
                         substr = line[line.index('"')+1,line.size()-1]
                         link = substr[0,substr.index('"')]
@@ -43,20 +42,21 @@ class ParserController < ApplicationController
                         #puts detail.id
                     else
                         #revisar
-                        stag = line[line.index('<')+1,line.size()-1]
-                        cont = line[line.index('>')+1, line.size()-1]
-                        cont = cont[0, cont.index('<')-1]
-                        puts "STAG:::"+stag
-                        puts "CONTENT:::"+cont
-                        detail = WebPageDetail.new(tag:stag, content: cont, webPage_id: page_id)
-                        detail.save()
+                        if line 
+                            puts "OTROS TAG::::::::::::" + line
+                            stag = line[line.index('<')+1,line.index('>')-1]
+                            puts "STAG:::"+stag
+                            cont = line[line.index('>')+1, line.size()-1]
+                            cont = cont[0, cont.index('<')]
+                            puts "CONTENT:::"+cont
+                            detail = WebPageDetail.new(tag:stag, content: cont, webPage_id: page_id)
+                            detail.save()
+                        end                        
                     end
-                # puts line
+                 #puts line
                 end
             end
-        
         end
-
         head :no_content
 
     end
